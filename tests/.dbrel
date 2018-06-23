@@ -1,0 +1,7 @@
+{ "dkr":
+    { "connectionString": "Server=localhost;Database=CoreDB;User Id=sa;Password=abCD12#$;"
+    , "cfg": "
+select 'test' as test;
+"
+    }
+}
