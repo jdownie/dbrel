@@ -38,13 +38,12 @@ namespace Classes {
       return ret;
     }
 
-    public List<Dictionary<string, object>>fromString(string sql) {
+    public void exec(string sql) {
       SqlConnection conn = new SqlConnection(this.connectionString);
       conn.Open();
       SqlCommand cmd = new SqlCommand(sql, conn);
       cmd.CommandTimeout = 300;
-      List<Dictionary<string, object>> ret = this._resultSetFromCMD(cmd);
-      return ret;
+      cmd.ExecuteNonQuery();
     }
 
   }

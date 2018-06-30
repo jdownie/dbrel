@@ -77,9 +77,10 @@ namespace Classes {
       parts.RemoveAt(parts.Count - 1);
       string objectname = string.Join(".", parts);
       string type_clause = null;
-      if (type == "procedure") {
-        type_clause = string.Format("( N'P', N'PC' )");
-      }
+      if (type == "procedure") { type_clause = string.Format("( N'P', N'PC' )"); }
+      if (type == "function") { type_clause = string.Format("( N'FN' )"); }
+      if (type == "trigger") { type_clause = string.Format("( N'TR' )"); }
+      if (type == "view") { type_clause = string.Format("( N'V' )"); }
       string ret = string.Format(@"
 if exists ( select 1
             from sys.objects

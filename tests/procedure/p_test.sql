@@ -2,6 +2,6 @@ create procedure p_test
 as
 begin
 
-  select 123 as test;
+  select 999 as test;
 
 end

@@ -43,12 +43,11 @@ namespace dbrel {
           if (File.Exists(file.Value)) {
             dbconn db = new dbconn(cfg[tgt]["connectionString"]);
             string sql1 = DBRelLib.DropStatement(file.Value);
-            db.fromString(sql1);
-            Console.WriteLine(sql1);
+            db.exec(sql1);
             using (StreamReader sr = new StreamReader(file.Value)) {
               string sql2 = sr.ReadToEnd();
-              db.fromString(sql1);
               Console.WriteLine(sql2);
+              db.exec(sql2);
             }
           } else {
             Console.WriteLine("Specified file does not exist...\n  {0}", file.Value);
