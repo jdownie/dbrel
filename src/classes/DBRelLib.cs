@@ -5,11 +5,6 @@ using Newtonsoft.Json;
 
 namespace Classes {
 
-  public class DBTarget {
-    public string conncetionString { get; set; }
-    public string cfg { get; set; }
-  }
-
   public class DBRelLib {
 
     public static void Error(string err) {
@@ -49,15 +44,50 @@ namespace Classes {
       }
     }
 
-    public Dictionary<string, DBTarget> Cfg(string path) {
-      Dictionary<string, DBTarget> ret = new Dictionary<string, DBTarget>();
+    public static Dictionary<string, Dictionary<string, string>> Cfg(string path) {
+      Dictionary<string, Dictionary<string, string>> ret = new Dictionary<string, Dictionary<string, string>>();
       path = Path.Combine(path, ".dbrel");
-      if (!File.Exists(path)) {
+      if (File.Exists(path)) {
         using (StreamReader file = File.OpenText(path)) {
           JsonSerializer s = new JsonSerializer();
-          ret = (Dictionary<string, DBTarget>)s.Deserialize(file, typeof(Dictionary<string, DBTarget>));
+          ret = (Dictionary<string, Dictionary<string, string>>)s.Deserialize(file, typeof(Dictionary<string, Dictionary<string, string>>));
         }
       }
+      return ret;
+    }
+
+    public static string FindRoot(string path) {
+      string ret = null;
+      List<string> parts = new List<string>(Path.GetFullPath(path).Split(Path.DirectorySeparatorChar));
+      while (parts.Count > 0) {
+        string test = string.Join("/", parts);
+        if (Directory.Exists(test) && File.Exists(string.Format("{0}{1}.dbrel", test, Path.DirectorySeparatorChar))) {
+          ret = test;
+        }
+        parts.RemoveAt(parts.Count -1);
+      }
+      return ret;
+    }
+
+    public static string DropStatement(string script) {
+      List<string> parts = new List<string>(script.Split(Path.DirectorySeparatorChar));
+      string filename = parts[parts.Count - 1];
+      string type = parts[parts.Count - 2];
+      parts = new List<string>(filename.Split("."));
+      parts.RemoveAt(parts.Count - 1);
+      string objectname = string.Join(".", parts);
+      string type_clause = null;
+      if (type == "procedure") {
+        type_clause = string.Format("( N'P', N'PC' )");
+      }
+      string ret = string.Format(@"
+if exists ( select 1
+            from sys.objects
+            where object_id = OBJECT_ID(N'{0}')
+              and type in {1}
+          ) 
+  drop {2} {0};
+", objectname, type_clause, type);
       return ret;
     }
 

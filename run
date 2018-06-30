@@ -9,14 +9,16 @@ dotnet publish \
   --runtime $RUNTIME \
   --self-contained
 
-docker run \
-  -ti \
-  -v /home/jdownie/Development/dbrel/src/bin/Release/netcoreapp2.1/$RUNTIME:/dbrel \
-  --rm \
-  --dns=8.8.8.8 \
-  --name=dbrel \
-  microsoft/dotnet \
-  /bin/bash
+# docker run \
+#   -ti \
+#   -v /home/jdownie/Development/dbrel/src/bin/Release/netcoreapp2.1/$RUNTIME:/dbrel \
+#   --rm \
+#   --dns=8.8.8.8 \
+#   --name=dbrel \
+#   microsoft/dotnet \
+#   /bin/bash
 
 popd
+
+./src/bin/Release/netcoreapp2.1/linux-x64/dbrel tests/procedure/p_test.sql
 

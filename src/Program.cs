@@ -1,6 +1,9 @@
 ﻿using System;
+using System.IO;
 using Microsoft.Extensions.CommandLineUtils;
 using Classes;
+using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace dbrel {
 
@@ -27,9 +30,31 @@ namespace dbrel {
       cla.OnExecute(() => {
         if (init.HasValue()) {
           DBRelLib.Init(init.Value());
+        } else if (schema_action.HasValue()) {
+          Console.WriteLine(string.Format("Schema Action: {0}", schema_action.Value()));
+        } else if (file.Value != null) {
+          string root = DBRelLib.FindRoot(file.Value);
+          Dictionary<string, Dictionary<string, string>> cfg = DBRelLib.Cfg(root);
+          List<string> keys = new List<string>(cfg.Keys);
+          string tgt = keys[0];
+          if (target.HasValue()) {
+            tgt = target.Value();
+          }
+          if (File.Exists(file.Value)) {
+            dbconn db = new dbconn(cfg[tgt]["connectionString"]);
+            string sql1 = DBRelLib.DropStatement(file.Value);
+            db.fromString(sql1);
+            Console.WriteLine(sql1);
+            using (StreamReader sr = new StreamReader(file.Value)) {
+              string sql2 = sr.ReadToEnd();
+              db.fromString(sql1);
+              Console.WriteLine(sql2);
+            }
+          } else {
+            Console.WriteLine("Specified file does not exist...\n  {0}", file.Value);
+          }
         } else {
-          //Dictionary<string, DBTarget> cfg = DBRelLib.Cfg();
-          Console.WriteLine(file.Value);
+          cla.ShowHelp();
         }
         return 0;
       });

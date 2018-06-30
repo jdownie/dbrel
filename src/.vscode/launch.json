@@ -4,59 +4,28 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+
     {
-      "name": ".NET Core Launch (console)",
+      "name": "dbrel tests/procedure/p_test.sql",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceRoot}/bin/Debug/<target-framework>/<project-name.dll>",
-      "args": [],
+      "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
+      "args": [ "/home/jdownie/Development/dbrel/tests/procedure/p_test.sql" ],
       "cwd": "${workspaceRoot}",
       "stopAtEntry": false,
       "console": "internalConsole"
     },
     {
-      "name": ".NET Core Launch (console)",
+      "name": "dbrel -t prd tests/procedure/p_test.sql",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
-      "program": "${workspaceFolder}/bin/Debug/<insert-target-framework-here>/<insert-project-name-here>.dll",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "console": "internalConsole",
+      "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
+      "args": [ "-t", "prd", "/home/jdownie/Development/dbrel/tests/procedure/p_test.sql" ],
+      "cwd": "${workspaceRoot}",
       "stopAtEntry": false,
-      "internalConsoleOptions": "openOnSessionStart"
-    },
-    {
-      "name": ".NET Core Launch (web)",
-      "type": "coreclr",
-      "request": "launch",
-      "preLaunchTask": "build",
-      "program": "${workspaceFolder}/bin/Debug/<insert-target-framework-here>/<insert-project-name-here>.dll",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "stopAtEntry": false,
-      "internalConsoleOptions": "openOnSessionStart",
-      "launchBrowser": {
-        "enabled": true,
-        "args": "${auto-detect-url}",
-        "windows": {
-          "command": "cmd.exe",
-          "args": "/C start ${auto-detect-url}"
-        },
-        "osx": {
-          "command": "open"
-        },
-        "linux": {
-          "command": "xdg-open"
-        }
-      },
-      "env": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      },
-      "sourceFileMap": {
-        "/Views": "${workspaceFolder}/Views"
-      }
+      "console": "internalConsole"
     },
     {
       "name": ".NET Core Attach",

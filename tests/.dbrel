@@ -4,4 +4,10 @@
 select 'test' as test;
 "
     }
+, "prd":
+    { "connectionString": "Server=localhost;Database=CoreDB;User Id=sa;Password=abCD12#$;"
+    , "cfg": "
+select 'production' as test;
+"
+    }
 }
