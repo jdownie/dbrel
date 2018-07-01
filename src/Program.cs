@@ -109,8 +109,8 @@ namespace dbrel {
                 db.exec(sql1);
                 using (StreamReader sr = new StreamReader(file.Value)) {
                   string sql2 = sr.ReadToEnd();
-                  Console.WriteLine(sql2);
-                  db.exec(sql2);
+                  bool result = db.exec(sql2);
+                  Console.WriteLine(string.Format("Applying {0}... {1}", pathGiven, ( result ? "Success" : "Fail" )));
                 }
               } else {
                 Console.WriteLine("Specified file does not exist...\n  {0}", file.Value);

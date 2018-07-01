@@ -9,6 +9,7 @@ for i in 1 2 3; do
 
     docker run \
              -d \
+             --rm \
              -p "$p:1433" \
              --name "$hostname" \
              --hostname "$hostname" \
