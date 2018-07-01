@@ -3,7 +3,7 @@ as
 begin
 
   update t
-  set name = 'T: ' + t.name
+  set name = 'T2: ' + t.name
   from test t
   ,    inserted i
   where t.id = i.id;

@@ -1,0 +1,27 @@
+#!/bin/bash
+
+for i in 1 2 3; do
+
+  let p=10000+$i;
+  hostname="dbrel$i"
+
+  if [ "$1" == "start" ]; then
+
+    docker run \
+             -d \
+             -p "$p:1433" \
+             --name "$hostname" \
+             --hostname "$hostname" \
+             --env "ACCEPT_EULA=Y" \
+             --env "SA_PASSWORD=DBrel123!" \
+           microsoft/mssql-server-linux
+
+  fi
+
+  if [ "$1" == "stop" ]; then
+
+    docker stop "$hostname"
+
+  fi
+
+done

@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Classes;
 
 namespace Classes {
 
@@ -77,11 +78,24 @@ namespace Classes {
       parts.RemoveAt(parts.Count - 1);
       string objectname = string.Join(".", parts);
       string type_clause = null;
-      if (type == "procedure") { type_clause = string.Format("( N'P', N'PC' )"); }
-      if (type == "function") { type_clause = string.Format("( N'FN' )"); }
-      if (type == "trigger") { type_clause = string.Format("( N'TR' )"); }
-      if (type == "view") { type_clause = string.Format("( N'V' )"); }
-      string ret = string.Format(@"
+      string ret = null;
+      if (type == "index") {
+        parts = new List<string>(objectname.Split("."));
+        string tablename = parts[0];
+        string indexname = parts[1];
+        ret = string.Format(@"
+if exists ( select 1
+            from sys.indexes 
+            where object_id = OBJECT_ID('{0}')
+              and name='idx1')
+  drop index {0}.{1}
+        ", tablename, indexname);
+      } else {
+        if (type == "procedure") { type_clause = string.Format("( N'P', N'PC' )"); }
+        if (type == "function") { type_clause = string.Format("( N'FN' )"); }
+        if (type == "trigger") { type_clause = string.Format("( N'TR' )"); }
+        if (type == "view") { type_clause = string.Format("( N'V' )"); }
+        ret = string.Format(@"
 if exists ( select 1
             from sys.objects
             where object_id = OBJECT_ID(N'{0}')
@@ -89,6 +103,42 @@ if exists ( select 1
           ) 
   drop {2} {0};
 ", objectname, type_clause, type);
+      }
+      return ret;
+    }
+
+    public static void SchemaInit(string cs) {
+      string sql = "select count(*) as c from sysobjects where type = 'U' and name = '_dbrel';";
+      dbconn db = new dbconn(cs);
+      List<Dictionary<string, object>> rows = db.rows(sql);
+      int c = (int)rows[0]["c"];
+      if (c == 0) {
+        sql = "create table _dbrel (id int not null, primary key (id));";
+        db.exec(sql);
+      }
+    }
+
+    public static Dictionary<int, Dictionary<string, string>> SchemaQueue(string root) {
+      Dictionary<int, Dictionary<string, string>> ret = new Dictionary<int, Dictionary<string, string>>();
+      int i = 1;
+      bool loop = true;
+      while (loop) {
+        bool file_match = false;
+        for (int l = 0; l <= 4; l++) {
+          string prefix = new string('0', l);
+          string filepath = string.Format("{0}/schema/{1}{2}.sql", root, prefix, i);
+          if (File.Exists(filepath)) {
+            ret[i] = new Dictionary<string, string>();
+            ret[i]["filepath"] = filepath;
+            file_match = true;
+          }
+        }
+        if (!file_match) {
+          loop = false;
+        } else {
+          i++;
+        }
+      }
       return ret;
     }
 

@@ -1,4 +1,4 @@
 create table test
-( int id not null identity
+( id int not null identity
 , primary key (id)
 );

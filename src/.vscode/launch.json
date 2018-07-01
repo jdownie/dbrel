@@ -17,13 +17,79 @@
       "console": "internalConsole"
     },
     {
-      "name": "dbrel -t prd tests/procedure/p_test.sql",
+      "name": "dbrel tests/function/f_test.sql",
       "type": "coreclr",
       "request": "launch",
       "preLaunchTask": "build",
       "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
-      "args": [ "-t", "prd", "/home/jdownie/Development/dbrel/tests/procedure/p_test.sql" ],
+      "args": [ "/home/jdownie/Development/dbrel/tests/function/f_test.sql" ],
       "cwd": "${workspaceRoot}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "dbrel tests/trigger/ti_test.sql",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
+      "args": [ "/home/jdownie/Development/dbrel/tests/trigger/ti_test.sql" ],
+      "cwd": "${workspaceRoot}",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "dbrel tests/index/test.idx1.sql",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
+      "args": [ "/home/jdownie/Development/dbrel/tests/index/test.idx1.sql" ],
+      "cwd": "/home/jdownie/Development/dbrel/tests",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "dbrel -s queue",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
+      "args": [ "-s", "queue" ],
+      "cwd": "/home/jdownie/Development/dbrel/tests",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "dbrel -s apply",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
+      "args": [ "-s", "apply" ],
+      "cwd": "/home/jdownie/Development/dbrel/tests",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "dbrel -s rollback",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
+      "args": [ "-s", "rollback" ],
+      "cwd": "/home/jdownie/Development/dbrel/tests",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
+      "name": "dbrel -s manual",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build",
+      "program": "${workspaceRoot}/bin/Debug/netcoreapp2.1/dbrel.dll",
+      "args": [ "-s", "manual" ],
+      "cwd": "/home/jdownie/Development/dbrel/tests",
       "stopAtEntry": false,
       "console": "internalConsole"
     },
