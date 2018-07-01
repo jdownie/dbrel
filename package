@@ -1,0 +1,6 @@
+#!/bin/bash
+
+pushd src
+dotnet deb -r linux-x64 -f netcoreapp2.1 -c Release
+popd
+
