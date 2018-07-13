@@ -1,0 +1,14 @@
+#!/bin/bash
+
+for t in dbrel1 dbrel2 dbrel3; do
+  echo "Clearing queue $t..."
+  pushd tests
+  for p in $(../src/bin/Release/netcoreapp2.1/linux-x64/dbrel -t "$t" -s queue); do
+    ../src/bin/Release/netcoreapp2.1/linux-x64/dbrel -t "$t" -s apply
+  done
+  popd
+  for f in ./tests/trigger/ti_test.sql ./tests/function/f_test.sql ./tests/index/test.idx1.sql ./tests/procedure/p_test.sql ./tests/view/v_test.sql; do
+    ./src/bin/Release/netcoreapp2.1/linux-x64/dbrel -t "$t" "$f"
+  done
+done
+
