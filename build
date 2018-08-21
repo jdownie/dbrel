@@ -1,0 +1,13 @@
+#!/bin/bash
+
+RUNTIME="linux-x64"
+
+pushd src
+
+dotnet publish \
+  -c Release \
+  --runtime $RUNTIME \
+  --self-contained
+
+popd
+

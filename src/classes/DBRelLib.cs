@@ -92,7 +92,7 @@ if exists ( select 1
         ", tablename, indexname);
       } else {
         if (type == "procedure") { type_clause = string.Format("( N'P', N'PC' )"); }
-        if (type == "function") { type_clause = string.Format("( N'FN' )"); }
+        if (type == "function") { type_clause = string.Format("( N'FN', N'TF' )"); }
         if (type == "trigger") { type_clause = string.Format("( N'TR' )"); }
         if (type == "view") { type_clause = string.Format("( N'V' )"); }
         ret = string.Format(@"

@@ -4,37 +4,45 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using System.Data.SqlClient;
 using System.Data;
+using Microsoft.Extensions.CommandLineUtils;
 
 namespace Classes {
 
   public class dbconn {
 
     private string connectionString;
+    public string errorMessage;
 
     public dbconn(string cs) {
+      this.errorMessage = null;
       this.connectionString = cs;
     }
 
     private List<Dictionary<string, object>> _resultSetFromCMD(SqlCommand sqlcmd) {
-      var reader = sqlcmd.ExecuteReader();
       List<Dictionary<string, object>> ret = new List<Dictionary<string, object>>();
-      while (reader.Read()) {
-        Dictionary<string, object> record = new Dictionary<string, object>();
-        for (int i = 0; i < reader.FieldCount; i++) {
-          string colname = reader.GetName(i);
-          if (reader.IsDBNull(i)) {
-            record[colname] = null;
-          } else {
-            if (reader[i] is string) {
-              record[colname] = ((string)reader[i]).TrimEnd();
+      try {
+        var reader = sqlcmd.ExecuteReader();
+        while (reader.Read()) {
+          Dictionary<string, object> record = new Dictionary<string, object>();
+          for (int i = 0; i < reader.FieldCount; i++) {
+            string colname = reader.GetName(i);
+            if (reader.IsDBNull(i)) {
+              record[colname] = null;
             } else {
-              record[colname] = reader[i];
+              if (reader[i] is string) {
+                record[colname] = ((string)reader[i]).TrimEnd();
+              } else {
+                record[colname] = reader[i];
+              }
             }
           }
+          ret.Add(record);
         }
-        ret.Add(record);
+        reader.Close();
+        this.errorMessage = null;
+      } catch (Exception e) {
+        this.errorMessage = e.Message;
       }
-      reader.Close();
       return ret;
     }
 
@@ -56,8 +64,11 @@ namespace Classes {
       cmd.CommandTimeout = 300;
       try {
         cmd.ExecuteNonQuery();
-      } catch {
+        this.errorMessage = null;
+      } catch (Exception e) {
         ret = false;
+        Console.WriteLine(string.Format("Error: {0}", e.Message));
+        this.errorMessage = e.Message;
       }
       conn.Close();
       return ret;
