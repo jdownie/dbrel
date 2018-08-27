@@ -21,6 +21,9 @@ namespace dbrel {
       CommandOption target = cla.Option( "-t |--target <target>"
                                        , "Target database code referenced in .dbrel"
                                        , CommandOptionType.SingleValue);
+      CommandOption config = cla.Option( "-c |--config"
+                                       , "Apply configuration script."
+                                       , CommandOptionType.NoValue);
       CommandOption schema_action = cla.Option( "-s | --schema_action <action>"
                                               , "Database schema action"
                                               , CommandOptionType.SingleValue);
@@ -46,6 +49,8 @@ namespace dbrel {
             string cs = cfg[tgt]["connectionString"];
             if (init.HasValue()) {
               DBRelLib.Init(init.Value());
+            } else if (config.HasValue()) {
+              DBRelLib.Config(root, tgt, cs);
             } else if (schema_action.HasValue()) {
               DBRelLib.SchemaInit(cs);
               Dictionary<int, Dictionary<string, string>> queue = DBRelLib.SchemaQueue(root);

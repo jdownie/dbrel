@@ -13,6 +13,20 @@ namespace Classes {
       Environment.Exit(1);
     }
 
+    public static void Config(string dir, string tgt, string cs) {
+      string configScript = string.Format("{0}/{1}.sql", dir, tgt);
+      if (!File.Exists(configScript)) {
+        Console.WriteLine(string.Format("{0} does not exist.", configScript));
+      } else {
+        dbconn db = new dbconn(cs);
+        using (StreamReader sr = new StreamReader(configScript)) {
+          string sql = sr.ReadToEnd();
+          bool result = db.exec(sql);
+          Console.WriteLine(string.Format("Applying {0}... {1}", configScript, ( result ? "Success" : "Fail" )));
+        }
+      }
+    }
+
     public static void Init(string dir) {
       if (System.IO.Directory.Exists(dir)) {
         List<string> subdirs = new List<string>();
@@ -22,6 +36,7 @@ namespace Classes {
         subdirs.Add("function");
         subdirs.Add("trigger");
         subdirs.Add("index");
+        subdirs.Add("config");
         string path = null;
         path = Path.Combine(dir, ".dbrel");
         if (!File.Exists(path)) {
