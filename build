@@ -4,7 +4,7 @@ RUNTIME="linux-x64"
 
 pushd src
 
-dotnet-sdk.dotnet publish \
+dotnet publish \
   -c Release \
   --runtime $RUNTIME \
   --self-contained

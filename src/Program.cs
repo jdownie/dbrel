@@ -15,13 +15,13 @@ namespace dbrel {
       cla.FullName = "dbrel: Database Release Utility";
       cla.HelpOption("-? | -h | --help");
       cla.VersionOption( "-v | --version", "0.0.2" );
-      CommandOption init = cla.Option( "-i |--init <dir>"
+      CommandOption init = cla.Option( "-i | --init <dir>"
                                      , "Initialise an empty folder structure."
                                      , CommandOptionType.SingleValue);
-      CommandOption target = cla.Option( "-t |--target <target>"
+      CommandOption target = cla.Option( "-t | --target <target>"
                                        , "Target database code referenced in .dbrel"
                                        , CommandOptionType.SingleValue);
-      CommandOption config = cla.Option( "-c |--config"
+      CommandOption config = cla.Option( "-c | --config"
                                        , "Apply configuration script."
                                        , CommandOptionType.NoValue);
       CommandOption schema_action = cla.Option( "-s | --schema_action <action>"

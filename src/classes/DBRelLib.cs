@@ -14,7 +14,7 @@ namespace Classes {
     }
 
     public static void Config(string dir, string tgt, string cs) {
-      string configScript = string.Format("{0}/{1}.sql", dir, tgt);
+      string configScript = string.Format("{0}/config/{1}.sql", dir, tgt);
       if (!File.Exists(configScript)) {
         Console.WriteLine(string.Format("{0} does not exist.", configScript));
       } else {
