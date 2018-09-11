@@ -102,7 +102,7 @@ namespace Classes {
 if exists ( select 1
             from sys.indexes 
             where object_id = OBJECT_ID('{0}')
-              and name='idx1')
+              and name='{1}')
   drop index {0}.{1}
         ", tablename, indexname);
       } else {
