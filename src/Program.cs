@@ -47,14 +47,16 @@ namespace dbrel {
           }
           if (keys.Contains(tgt)) {
             string cs = cfg[tgt]["connectionString"];
+            string driver = cfg[tgt]["driver"];
+            driver = ( driver == null ? "mssql" : driver );
             if (init.HasValue()) {
               DBRelLib.Init(init.Value());
             } else if (config.HasValue()) {
-              DBRelLib.Config(root, tgt, cs);
+              DBRelLib.Config(root, tgt, cs, driver);
             } else if (schema_action.HasValue()) {
-              DBRelLib.SchemaInit(cs);
+              DBRelLib.SchemaInit(cs, driver);
               Dictionary<int, Dictionary<string, string>> queue = DBRelLib.SchemaQueue(root);
-              dbconn db = new dbconn(cs);
+              dbconn db = new dbconn(cs, driver);
               List<Dictionary<string, object>> rows = db.rows("select id from _dbrel");
               foreach (KeyValuePair<int, Dictionary<string, string>> entry in queue) {
                 string applied = "0";
@@ -109,7 +111,7 @@ namespace dbrel {
               }
             } else if (file.Value != null) {
               if (File.Exists(file.Value)) {
-                dbconn db = new dbconn(cs);
+                dbconn db = new dbconn(cs, driver);
                 string sql1 = DBRelLib.DropStatement(file.Value);
                 db.exec(sql1);
                 using (StreamReader sr = new StreamReader(file.Value)) {

@@ -13,12 +13,12 @@ namespace Classes {
       Environment.Exit(1);
     }
 
-    public static void Config(string dir, string tgt, string cs) {
+    public static void Config(string dir, string tgt, string cs, string driver) {
       string configScript = string.Format("{0}/config/{1}.sql", dir, tgt);
       if (!File.Exists(configScript)) {
         Console.WriteLine(string.Format("{0} does not exist.", configScript));
       } else {
-        dbconn db = new dbconn(cs);
+        dbconn db = new dbconn(cs, driver);
         using (StreamReader sr = new StreamReader(configScript)) {
           string sql = sr.ReadToEnd();
           bool result = db.exec(sql);
@@ -122,9 +122,9 @@ if exists ( select 1
       return ret;
     }
 
-    public static void SchemaInit(string cs) {
+    public static void SchemaInit(string cs, string driver) {
       string sql = "select count(*) as c from sysobjects where type = 'U' and name = '_dbrel';";
-      dbconn db = new dbconn(cs);
+      dbconn db = new dbconn(cs, driver);
       List<Dictionary<string, object>> rows = db.rows(sql);
       int c = (int)rows[0]["c"];
       if (c == 0) {
