@@ -14,7 +14,7 @@ namespace dbrel {
       cla.Name = "dbrel";
       cla.FullName = "dbrel: Database Release Utility";
       cla.HelpOption("-? | -h | --help");
-      cla.VersionOption( "-v | --version", "0.0.3" );
+      cla.VersionOption( "-v | --version", "0.0.4" );
       CommandOption init = cla.Option( "-i | --init <dir>"
                                      , "Initialise an empty folder structure."
                                      , CommandOptionType.SingleValue);

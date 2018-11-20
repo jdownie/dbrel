@@ -123,13 +123,21 @@ if exists ( select 1
     }
 
     public static void SchemaInit(string cs, string driver) {
-      string sql = "select count(*) as c from sysobjects where type = 'U' and name = '_dbrel';";
-      dbconn db = new dbconn(cs, driver);
-      List<Dictionary<string, object>> rows = db.rows(sql);
-      int c = (int)rows[0]["c"];
-      if (c == 0) {
-        sql = "create table _dbrel (id int not null, primary key (id));";
-        db.exec(sql);
+      string sql = null;
+      if (driver == "mssql") {
+        sql = "select count(*) as c from sysobjects where type = 'U' and name = '_dbrel';";
+      }
+      if (driver == "mysql") {
+        sql = "select count(*) as c from information_schema.tables where table_schema = database() AND table_name = '_dbrel';";
+      }
+      if (sql != null) {
+        dbconn db = new dbconn(cs, driver);
+        List<Dictionary<string, object>> rows = db.rows(sql);
+        int c = (int)rows[0]["c"];
+        if (c == 0) {
+          sql = "create table _dbrel (id int not null, primary key (id));";
+          db.exec(sql);
+        }
       }
     }
 
