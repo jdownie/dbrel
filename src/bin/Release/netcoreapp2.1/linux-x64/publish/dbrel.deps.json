@@ -1,18 +1,17 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.1/linux-x64",
-    "signature": "49f8b2dda0724ece8057f5b73dca84d4966946fd"
+    "signature": "e0667ab7306f3a5b8516597077033d0cf2c26412"
   },
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v2.1": {},
     ".NETCoreApp,Version=v2.1/linux-x64": {
-      "dbrel/0.0.3": {
+      "dbrel/1.0.0": {
         "dependencies": {
           "Microsoft.Extensions.CommandLineUtils": "1.1.1",
           "Microsoft.NETCore.App": "2.1.6",
           "Newtonsoft.Json": "11.0.2",
-          "Packaging.Targets": "0.1.1-r325",
           "System.Data.SqlClient": "4.5.1"
         },
         "runtime": {
@@ -77,7 +76,6 @@
           }
         }
       },
-      "Packaging.Targets/0.1.1-r325": {},
       "runtime.linux-x64.Microsoft.NETCore.App/2.1.6": {
         "runtime": {
           "runtimes/linux-x64/lib/netcoreapp2.1/Microsoft.CSharp.dll": {
@@ -856,7 +854,7 @@
     }
   },
   "libraries": {
-    "dbrel/0.0.3": {
+    "dbrel/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
@@ -930,13 +928,6 @@
       "sha512": "sha512-IvJe1pj7JHEsP8B8J8DwlMEx8UInrs/x+9oVY+oCD13jpLu4JbJU2WCIsMRn5C4yW9+DgkaO8uiVE5VHKjpmdQ==",
       "path": "newtonsoft.json/11.0.2",
       "hashPath": "newtonsoft.json.11.0.2.nupkg.sha512"
-    },
-    "Packaging.Targets/0.1.1-r325": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Vjo2dgBxyoXbU3iOhIgOJLHutwyuPr/B16+HZDBuUVMtVgf3Vd+TEz39ZCFF6hCwLh5pdlsA69N0UIFNWqBtBA==",
-      "path": "packaging.targets/0.1.1-r325",
-      "hashPath": "packaging.targets.0.1.1-r325.nupkg.sha512"
     },
     "runtime.linux-x64.Microsoft.NETCore.App/2.1.6": {
       "type": "package",

@@ -15,7 +15,4 @@
   <ImportGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
     <Import Project="$(NuGetPackageRoot)microsoft.netcore.app/2.1.6/build/netcoreapp2.1/Microsoft.NETCore.App.props" Condition="Exists('$(NuGetPackageRoot)microsoft.netcore.app/2.1.6/build/netcoreapp2.1/Microsoft.NETCore.App.props')" />
   </ImportGroup>
-  <PropertyGroup Condition=" '$(ExcludeRestorePackageImports)' != 'true' ">
-    <PkgPackaging_Targets Condition=" '$(PkgPackaging_Targets)' == '' ">/home/jdownie/.nuget/packages/packaging.targets/0.1.1-r325</PkgPackaging_Targets>
-  </PropertyGroup>
 </Project>
