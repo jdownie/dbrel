@@ -85,7 +85,7 @@ namespace Classes {
       return ret;
     }
 
-    public static string DropStatement(string script) {
+    public static string DropStatement(string script, string driver) {
       List<string> parts = new List<string>(script.Split(Path.DirectorySeparatorChar));
       string filename = parts[parts.Count - 1];
       string type = parts[parts.Count - 2];
@@ -94,23 +94,29 @@ namespace Classes {
       string objectname = string.Join(".", parts);
       string type_clause = null;
       string ret = null;
-      if (type == "index") {
-        parts = new List<string>(objectname.Split("."));
-        string tablename = parts[0];
-        string indexname = parts[1];
+      if (driver == "mysql") {
         ret = string.Format(@"
+drop {0} {1};
+", type, objectname);
+      }
+      if (driver == "mssql") {
+        if (type == "index") {
+          parts = new List<string>(objectname.Split("."));
+          string tablename = parts[0];
+          string indexname = parts[1];
+          ret = string.Format(@"
 if exists ( select 1
             from sys.indexes 
             where object_id = OBJECT_ID('{0}')
               and name='{1}')
   drop index {0}.{1}
-        ", tablename, indexname);
-      } else {
-        if (type == "procedure") { type_clause = string.Format("( N'P', N'PC' )"); }
-        if (type == "function") { type_clause = string.Format("( N'FN', N'TF' )"); }
-        if (type == "trigger") { type_clause = string.Format("( N'TR' )"); }
-        if (type == "view") { type_clause = string.Format("( N'V' )"); }
-        ret = string.Format(@"
+          ", tablename, indexname);
+        } else {
+          if (type == "procedure") { type_clause = string.Format("( N'P', N'PC' )"); }
+          if (type == "function") { type_clause = string.Format("( N'FN', N'TF' )"); }
+          if (type == "trigger") { type_clause = string.Format("( N'TR' )"); }
+          if (type == "view") { type_clause = string.Format("( N'V' )"); }
+          ret = string.Format(@"
 if exists ( select 1
             from sys.objects
             where object_id = OBJECT_ID(N'{0}')
@@ -118,6 +124,7 @@ if exists ( select 1
           ) 
   drop {2} {0};
 ", objectname, type_clause, type);
+        }
       }
       return ret;
     }

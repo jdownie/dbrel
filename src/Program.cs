@@ -47,8 +47,10 @@ namespace dbrel {
           }
           if (keys.Contains(tgt)) {
             string cs = cfg[tgt]["connectionString"];
-            string driver = cfg[tgt]["driver"];
-            driver = ( driver == null ? "mssql" : driver );
+            string driver = "mssql";
+            if (cfg[tgt].ContainsKey("driver")) {
+              driver = cfg[tgt]["driver"];
+            }
             if (init.HasValue()) {
               DBRelLib.Init(init.Value());
             } else if (config.HasValue()) {
@@ -112,7 +114,7 @@ namespace dbrel {
             } else if (file.Value != null) {
               if (File.Exists(file.Value)) {
                 dbconn db = new dbconn(cs, driver);
-                string sql1 = DBRelLib.DropStatement(file.Value);
+                string sql1 = DBRelLib.DropStatement(file.Value, driver);
                 db.exec(sql1);
                 using (StreamReader sr = new StreamReader(file.Value)) {
                   string sql2 = sr.ReadToEnd();
