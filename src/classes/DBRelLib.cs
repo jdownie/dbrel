@@ -140,7 +140,7 @@ if exists ( select 1
       if (sql != null) {
         dbconn db = new dbconn(cs, driver);
         List<Dictionary<string, object>> rows = db.rows(sql);
-        int c = (int)rows[0]["c"];
+        long c = (long)rows[0]["c"];
         if (c == 0) {
           sql = "create table _dbrel (id int not null, primary key (id));";
           db.exec(sql);
