@@ -127,6 +127,9 @@ namespace Classes {
         } catch (Exception e) {
           ret = false;
           Console.WriteLine(string.Format("Error: {0}", e.Message));
+          if (e.InnerException != null) {
+            Console.WriteLine(string.Format("       {0}", e.InnerException.Message));
+          }
           this.errorMessage = e.Message;
         }
         conn.Close();
