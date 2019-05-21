@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using Microsoft.Extensions.CommandLineUtils;
 using Classes;
@@ -14,7 +14,7 @@ namespace dbrel {
       cla.Name = "dbrel";
       cla.FullName = "dbrel: Database Release Utility";
       cla.HelpOption("-? | -h | --help");
-      cla.VersionOption( "-v | --version", "0.0.3" );
+      cla.VersionOption( "-v | --version", "0.0.4" );
       CommandOption init = cla.Option( "-i | --init <dir>"
                                      , "Initialise an empty folder structure."
                                      , CommandOptionType.SingleValue);
@@ -47,14 +47,18 @@ namespace dbrel {
           }
           if (keys.Contains(tgt)) {
             string cs = cfg[tgt]["connectionString"];
+            string driver = "mssql";
+            if (cfg[tgt].ContainsKey("driver")) {
+              driver = cfg[tgt]["driver"];
+            }
             if (init.HasValue()) {
               DBRelLib.Init(init.Value());
             } else if (config.HasValue()) {
-              DBRelLib.Config(root, tgt, cs);
+              DBRelLib.Config(root, tgt, cs, driver);
             } else if (schema_action.HasValue()) {
-              DBRelLib.SchemaInit(cs);
+              DBRelLib.SchemaInit(cs, driver);
               Dictionary<int, Dictionary<string, string>> queue = DBRelLib.SchemaQueue(root);
-              dbconn db = new dbconn(cs);
+              dbconn db = new dbconn(cs, driver);
               List<Dictionary<string, object>> rows = db.rows("select id from _dbrel");
               foreach (KeyValuePair<int, Dictionary<string, string>> entry in queue) {
                 string applied = "0";
@@ -109,8 +113,8 @@ namespace dbrel {
               }
             } else if (file.Value != null) {
               if (File.Exists(file.Value)) {
-                dbconn db = new dbconn(cs);
-                string sql1 = DBRelLib.DropStatement(file.Value);
+                dbconn db = new dbconn(cs, driver);
+                string sql1 = DBRelLib.DropStatement(file.Value, driver);
                 db.exec(sql1);
                 using (StreamReader sr = new StreamReader(file.Value)) {
                   string sql2 = sr.ReadToEnd();
