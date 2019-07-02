@@ -88,20 +88,6 @@ namespace Classes {
 
     public bool exec(string sql) {
       bool ret = true;
-      if (this.driver == "mysql") {
-        MySqlConnection conn = new MySqlConnection(this.connectionString);
-        conn.Open();
-        MySqlCommand cmd = new MySqlCommand(sql, conn);
-        try {
-          cmd.ExecuteNonQuery();
-          this.errorMessage = null;
-        } catch (Exception e) {
-          ret = false;
-          Console.WriteLine(string.Format("Error: {0}", e.Message));
-          this.errorMessage = e.Message;
-        }
-        conn.Close();
-      }
       if (this.driver == "mssql") {
         SqlConnection conn = new SqlConnection(this.connectionString);
         conn.Open();
