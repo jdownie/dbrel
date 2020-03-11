@@ -75,7 +75,7 @@ namespace Classes {
     public static string FindRoot(string path) {
       string ret = null;
       List<string> parts = new List<string>(Path.GetFullPath(path).Split(Path.DirectorySeparatorChar));
-      while (parts.Count > 0 & ret == null) {
+      while (parts.Count > 0 && ret == null) {
         string test = string.Join("/", parts);
         if (Directory.Exists(test) && File.Exists(string.Format("{0}{1}.dbrel", test, Path.DirectorySeparatorChar))) {
           ret = test;
