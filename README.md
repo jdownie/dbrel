@@ -28,6 +28,7 @@ exec pu_setting('admin_email', 'me@home.com');
 exec pu_setting('attachments_dir', '/tmp/attachments');
 exec pu_setting('admin_email', 'me@home.com');
 "
+    , "ignore_patterns": ".*apple.*\\.sql"
     }
 , "prd":
     { "connectionString": "Server=prd.mybiz.com;Database=prj1db;User Id=deploy;Password=secret;"
@@ -37,6 +38,8 @@ exec pu_setting('admin_email', 'me@home.com');
 ```
 
 Example 1 also demonstrates another `cfg` feature. Because I am often refreshing my Docker and UAT databases from production backups, it's easy to accidentally overwrite certain development and UAT specific settings. The `cfg` property is a script that can be run at any time to remind a target environment what sets it apart from production. In the example provided, a stored procedure `pu_setting` updates a `setting` table with values that govern the behaviour of the application in any of the three environments.
+
+The "uat" target also demonstrates the "ignore_patterns" feature. If you're (like me) occasionally guilty of running in somebody else's code when they'd prefer you left it alone you might find this helpful.
 
 ### Example 2
 ```javascript
