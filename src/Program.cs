@@ -54,7 +54,7 @@ namespace dbrel {
               List<string> ignore_patterns = new List<string>(cfg[tgt]["ignore_patterns"].Split(","));
               foreach (string ignore_pattern in ignore_patterns) {
                 Regex re = new Regex(ignore_pattern);
-                if (re.Match(file.Value).Success) {
+                if (file.Value != null && re.Match(file.Value).Success) {
                   ignore_file = true;
                 }
               }
