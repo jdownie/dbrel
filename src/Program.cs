@@ -15,7 +15,7 @@ namespace dbrel {
       cla.Name = "dbrel";
       cla.FullName = "dbrel: Database Release Utility";
       cla.HelpOption("-? | -h | --help");
-      cla.VersionOption( "-v | --version", "0.0.6" );
+      cla.VersionOption( "-v | --version", "0.0.7" );
       CommandOption init = cla.Option( "-i | --init <dir>"
                                      , "Initialise an empty folder structure."
                                      , CommandOptionType.SingleValue);
@@ -47,9 +47,15 @@ namespace dbrel {
             tgt = target.Value();
           }
           if (keys.Contains(tgt)) {
+            List<string> tgtKeys = new List<string>(cfg[tgt].Keys);
+            // If there is a block_hosts key, interpret it...
+            bool block_host = false;
+            if (tgtKeys.Contains("block_hosts")) {
+              List<string> block_hosts = new List<string>(cfg[tgt]["block_hosts"].Split(","));
+              block_host = block_hosts.Contains(System.Net.Dns.GetHostName());
+            }
             // If there is an ignore_patterns key, interpret it...
             bool ignore_file = false;
-            List<string> tgtKeys = new List<string>(cfg[tgt].Keys);
             if (tgtKeys.Contains("ignore_patterns")) {
               List<string> ignore_patterns = new List<string>(cfg[tgt]["ignore_patterns"].Split(","));
               foreach (string ignore_pattern in ignore_patterns) {
@@ -59,7 +65,9 @@ namespace dbrel {
                 }
               }
             }
-            if (ignore_file) {
+            if (block_host) {
+              Console.WriteLine(string.Format("{0} has been explicitly blocked for the target '{1}'", System.Net.Dns.GetHostName(), tgt));
+            } else if (ignore_file) {
               Console.WriteLine(string.Format("Ignoring {0}. Check your .dbrel file is this is a mistake.", file.Value));
             } else {
               string cs = cfg[tgt]["connectionString"];
