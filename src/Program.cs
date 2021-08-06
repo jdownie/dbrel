@@ -71,6 +71,9 @@ namespace dbrel {
               Console.WriteLine(string.Format("Ignoring {0}. Check your .dbrel file is this is a mistake.", file.Value));
             } else {
               string cs = cfg[tgt]["connectionString"];
+              if (Environment.GetEnvironmentVariable("DEBUG") != null) {
+                Console.WriteLine(cs);
+              }
               string driver = "mssql";
               if (cfg[tgt].ContainsKey("driver")) {
                 driver = cfg[tgt]["driver"];
