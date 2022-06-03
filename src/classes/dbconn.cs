@@ -71,7 +71,7 @@ namespace Classes {
         SqlConnection conn = new SqlConnection(this.connectionString);
         conn.Open();
         SqlCommand cmd = new SqlCommand(sql, conn);
-        cmd.CommandTimeout = 300;
+        cmd.CommandTimeout = 900;
         ret = this._resultSetFromCommand(cmd);
         conn.Close();
       }
@@ -92,7 +92,7 @@ namespace Classes {
         SqlConnection conn = new SqlConnection(this.connectionString);
         conn.Open();
         SqlCommand cmd = new SqlCommand(sql, conn);
-        cmd.CommandTimeout = 300;
+        cmd.CommandTimeout = 900;
         try {
           cmd.ExecuteNonQuery();
           this.errorMessage = null;
