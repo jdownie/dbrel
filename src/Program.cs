@@ -142,6 +142,7 @@ namespace dbrel {
                 if (File.Exists(file.Value)) {
                   dbconn db = new dbconn(cs, driver);
                   string sql1 = DBRelLib.DropStatement(file.Value, driver);
+                  // Console.WriteLine(sql1);
                   db.exec(sql1);
                   using (StreamReader sr = new StreamReader(file.Value)) {
                     string sql2 = sr.ReadToEnd();

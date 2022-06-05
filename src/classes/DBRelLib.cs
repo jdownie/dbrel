@@ -104,6 +104,11 @@ drop {0} {1};
           parts = new List<string>(objectname.Split("."));
           string tablename = parts[0];
           string indexname = parts[1];
+	  if (parts.Count == 3) {
+            indexname = parts[2];
+            parts.RemoveAt(2);
+            tablename = string.Join(".", parts);
+          }
           ret = string.Format(@"
 if exists ( select 1
             from sys.indexes 
